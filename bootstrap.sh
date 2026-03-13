@@ -185,11 +185,16 @@ main() {
     update_system
     install_base_tools
     install_java
-    install_docker
-    install_jenkins
-    install_terraform
-    detect_cloud
-    install_cloud_cli
+    
+    echo "Starting parallel installations..."
+
+    install_docker &
+    install_terraform &
+    detect_cloud &
+    install_cloud_cli &
+
+    wait
+    install_jenkins 
 
 }
 
