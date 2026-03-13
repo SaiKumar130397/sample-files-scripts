@@ -79,15 +79,17 @@ install_jenkins() {
 
     echo "Installing Jenkins..."
 
-    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | \
-        tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+    apt-get install -y fontconfig openjdk-17-jre
 
-    echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-        https://pkg.jenkins.io/debian-stable binary/ \
-        | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key \
+    | gpg --dearmor \
+    | tee /usr/share/keyrings/jenkins-keyring.gpg > /dev/null
+
+    echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.gpg] \
+    https://pkg.jenkins.io/debian-stable binary/" \
+    | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 
     apt-get update -y
-
     apt-get install -y jenkins
 
     systemctl enable jenkins
