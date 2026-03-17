@@ -82,7 +82,7 @@ install_jenkins() {
     apt-get update -y
     apt-get install -y openjdk-17-jre fontconfig
 
-    wget -O /tmp/jenkins.deb https://get.jenkins.io/debian-stable/jenkins_2.452.3_all.deb
+    wget -O /tmp/jenkins.deb https://pkg.jenkins.io/debian-stable/binary/jenkins_latest_all.deb
 
     dpkg -i /tmp/jenkins.deb || apt-get install -f -y
 
