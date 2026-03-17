@@ -14,5 +14,5 @@ A. bootstrap.sh
 
 3. Watch Logs Live - sudo tail -f /var/log/bootstrap.log
 
-4. Jenkins admin password - sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+4. Jenkins admin password - sudo cat /var/lib/jenkins/.jenkins/secrets/initialAdminPassword
 
