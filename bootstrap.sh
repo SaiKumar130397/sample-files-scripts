@@ -77,20 +77,38 @@ install_docker() {
 
 install_jenkins() {
 
-    echo "Installing Jenkins..."
+    echo "Installing Jenkins using WAR file..."
 
-    apt-get update -y
-    apt-get install -y openjdk-17-jre fontconfig
+    useradd -m -d /var/lib/jenkins -s /bin/bash jenkins || true
 
-    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key \
-      | gpg --dearmor -o /usr/share/keyrings/jenkins-keyring.gpg
+    # Create directories
+    mkdir -p /opt/jenkins
+    mkdir -p /var/lib/jenkins
+    chown -R jenkins:jenkins /opt/jenkins /var/lib/jenkins
 
-    echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.gpg] \
-      https://pkg.jenkins.io/debian-stable binary/ \
-      | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+    # Download latest Jenkins WAR (LTS)
+    wget -O /opt/jenkins/jenkins.war https://get.jenkins.io/war-stable/latest/jenkins.war
 
-    apt-get update -y
-    apt-get install -y jenkins
+    chown jenkins:jenkins /opt/jenkins/jenkins.war
+
+    # Create systemd service
+    cat <<EOF > /etc/systemd/system/jenkins.service
+[Unit]
+Description=Jenkins CI
+After=network.target
+
+[Service]
+User=jenkins
+WorkingDirectory=/var/lib/jenkins
+ExecStart=/usr/bin/java -jar /opt/jenkins/jenkins.war --httpPort=8080
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    
+    systemctl daemon-reexec
+    systemctl daemon-reload
 
     systemctl enable jenkins
     systemctl start jenkins
