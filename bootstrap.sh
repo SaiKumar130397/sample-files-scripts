@@ -28,6 +28,8 @@ install_base_tools() {
         jq \
         vim \
         net-tools \
+        npm \
+        python3-pip \
         ca-certificates \
         gnupg \
         lsb-release \
@@ -135,6 +137,47 @@ install_terraform() {
     apt-get install -y terraform
 }
 
+install_kubectl() {
+
+    echo "Installing kubectl..."
+
+    # Default to the latest stable kubectl if not pinned via env var.
+    local KUBECTL_VERSION="${KUBECTL_VERSION:-}"
+    if [ -z "$KUBECTL_VERSION" ]; then
+        KUBECTL_VERSION="$(curl -fsSL https://dl.k8s.io/release/stable.txt)"
+    fi
+
+    local ARCH
+    ARCH="$(dpkg --print-architecture)"
+
+    case "$ARCH" in
+        amd64|arm64)
+            ;;
+        *)
+            echo "Unsupported architecture for kubectl: $ARCH"
+            exit 1
+            ;;
+    esac
+
+    curl -fsSLo /usr/local/bin/kubectl \
+        "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl"
+
+    chmod +x /usr/local/bin/kubectl
+
+    kubectl version --client --output=yaml >/dev/null 2>&1 || true
+}
+
+install_helm() {
+
+    echo "Installing Helm..."
+
+    # Install the latest Helm 3 release. Version pinning can be done by overriding HELM_INSTALL_DIR.
+    HELM_INSTALL_DIR="/usr/local/bin" \
+        curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+    helm version >/dev/null 2>&1 || true
+}
+
 
 detect_cloud() {
 
@@ -205,6 +248,8 @@ main() {
     install_java
     install_docker 
     install_terraform 
+    install_kubectl
+    install_helm
     detect_cloud 
     install_cloud_cli 
     #install_jenkins 
