@@ -71,7 +71,8 @@ install_docker() {
     systemctl enable docker
     systemctl start docker
 
-    usermod -aG docker ubuntu
+    DEFAULT_USER=$(getent passwd 1000 | cut -d: -f1)
+    usermod -aG docker $DEFAULT_USER
 
     echo "Docker installed"
 }
