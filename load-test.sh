@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE_URL="http://20.92.178.62"
+BASE_URL="http://20.92.178.62"   # replace with your actual URL
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
