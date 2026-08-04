@@ -253,7 +253,7 @@ main() {
     install_helm
     detect_cloud 
     install_cloud_cli 
-    #install_jenkins 
+    install_jenkins 
 
 }
 
