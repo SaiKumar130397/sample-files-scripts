@@ -8,7 +8,7 @@ azure_subscription_id          = "00000000-0000-0000-0000-000000000000"
 azure_tenant_id                = "00000000-0000-0000-0000-000000000000"
 azure_client_id                = "00000000-0000-0000-0000-000000000000"
 azure_client_secret            = "replace-me"
-azure_location                 = "East US"
+azure_location                 = "Australia East"
 azure_resource_group_name      = "packer-images-rg"
 azure_vm_size                  = "Standard_B2ms"
 

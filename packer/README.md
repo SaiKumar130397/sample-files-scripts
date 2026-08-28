@@ -107,19 +107,19 @@ packer build -var-file=variables.pkrvars.hcl .
 Build only AWS:
 
 ```bash
-packer build -only=amazon-ebs.ubuntu -var-file=variables.pkrvars.hcl .
+packer build -only='*.amazon-ebs.ubuntu' -var-file=variables.pkrvars.hcl .
 ```
 
 Build only Azure:
 
 ```bash
-packer build -only=azure-arm.ubuntu -var-file=variables.pkrvars.hcl .
+packer build -only='*.azure-arm.ubuntu' -var-file=variables.pkrvars.hcl .
 ```
 
 Build only Google Cloud:
 
 ```bash
-packer build -only=googlecompute.ubuntu -var-file=variables.pkrvars.hcl .
+packer build -only='*.googlecompute.ubuntu' -var-file=variables.pkrvars.hcl .
 ```
 
 ## Important Notes
