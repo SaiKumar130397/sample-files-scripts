@@ -193,15 +193,16 @@ detect_cloud() {
         return
     fi
 
-    if curl -s --connect-timeout 2 http://169.254.169.254/latest/meta-data/ >/dev/null 2>&1; then
-        CLOUD="aws"
-
-    elif curl -s -H Metadata:true --connect-timeout 2 \
+    if curl -fsS -H Metadata:true --connect-timeout 2 \
         "http://169.254.169.254/metadata/instance?api-version=2021-02-01" >/dev/null 2>&1; then
         CLOUD="azure"
 
-    elif curl -s --connect-timeout 2 http://metadata.google.internal >/dev/null 2>&1; then
+    elif curl -fsS -H "Metadata-Flavor: Google" \
+        "http://metadata.google.internal/computeMetadata/v1/" >/dev/null 2>&1; then
         CLOUD="gcp"
+
+    elif curl -fsS --connect-timeout 2 http://169.254.169.254/latest/meta-data/ >/dev/null 2>&1; then
+        CLOUD="aws"
 
     else
         CLOUD="unknown"
