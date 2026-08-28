@@ -44,9 +44,9 @@ install_base_tools() {
 
 install_java() {
 
-    echo "Installing OpenJDK..."
+    echo "Installing OpenJDK 21..."
 
-    apt-get install -y openjdk-17-jdk
+    apt-get install -y openjdk-21-jdk
 
     java -version
 }
