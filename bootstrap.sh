@@ -188,6 +188,11 @@ detect_cloud() {
 
     echo "Detecting cloud provider..."
 
+    if [ -n "${CLOUD:-}" ]; then
+        echo "Cloud provider already set: $CLOUD"
+        return
+    fi
+
     if curl -s --connect-timeout 2 http://169.254.169.254/latest/meta-data/ >/dev/null 2>&1; then
         CLOUD="aws"
 

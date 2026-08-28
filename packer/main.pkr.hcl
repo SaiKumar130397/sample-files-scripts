@@ -154,6 +154,18 @@ build {
   }
 
   provisioner "shell" {
+    only = ["azure-arm.ubuntu"]
+
+    inline = [
+      "chmod +x /tmp/bootstrap.sh",
+      "sudo CLOUD=azure /tmp/bootstrap.sh",
+      "sudo cloud-init clean --logs",
+    ]
+  }
+
+  provisioner "shell" {
+    except = ["azure-arm.ubuntu"]
+
     inline = [
       "chmod +x /tmp/bootstrap.sh",
       "sudo /tmp/bootstrap.sh",
