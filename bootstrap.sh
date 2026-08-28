@@ -11,6 +11,10 @@ echo " VM Bootstrap Started"
 
 update_system() {
     echo "Updating system..."
+    add-apt-repository -y main
+    add-apt-repository -y universe
+    add-apt-repository -y multiverse
+    add-apt-repository -y restricted
     apt-get update -y
     apt-get upgrade -y
 }
